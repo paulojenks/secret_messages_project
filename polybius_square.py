@@ -8,6 +8,8 @@ class PolybiusSquare(Cipher):
         super().__init__()
         self.codeword = input("What codeword would you like?").lower()
         self.polybius_square = self.create_polybius_square()
+        self.alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789'
+        self.spaces = "01"
 
     def create_polybius_square(self):
         """Creates the Polybius Square for
@@ -35,6 +37,8 @@ class PolybiusSquare(Cipher):
                 for key, value in self.polybius_square.items():
                     if value == letter:
                         em.append(key)
+            else:
+                em.append(self.spaces)
         encrypted_mess = "".join([num for sub_list in em for num in sub_list])
 
         self.block_code(encrypted_mess)
@@ -44,6 +48,7 @@ class PolybiusSquare(Cipher):
         Uses Polybius Square plus a keyword for extra security to match
         the letters in the message with the Polybius Square
         """
+        message = message.replace(" ", "")
         em = [message[i:i+2] for i in range(0,len(message), 2)]
         encrypted_mess = []
         for num in em:
@@ -51,15 +56,17 @@ class PolybiusSquare(Cipher):
                 for key, value in self.polybius_square.items():
                     if key == num:
                         encrypted_mess.append(value)
+            else:
+                encrypted_mess.append(" ")
         encrypted_mess = "".join(encrypted_mess)
-        self.block_code(encrypted_mess)
+        print(encrypted_mess.upper())
 
     def block_code(self, encrypted_mess):
         """block_code returns encrypted or decrypted Messages as blocks
         of 5 with padding
         """
         self.encrypted_mess = encrypted_mess
-        nums = [str(num) for num in range(1,7)]
+        nums = [str(num) for num in range(7,10)]
         if len(encrypted_mess) % 5 != 0:
             padding = random.choices(nums,
                                     k=math.floor(len(encrypted_mess)/5 + 1)

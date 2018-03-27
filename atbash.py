@@ -1,3 +1,5 @@
+import random
+
 from cipher import Cipher
 
 class Atbash(Cipher):
@@ -13,13 +15,15 @@ class Atbash(Cipher):
         Maps letter in alphabet to its reverse.
         """
         encryption = {letter1:letter2 for letter1, letter2 in zip(self.alphabet, self.alphabet[::-1])}
-        em = []
+        encrypted_mess = []
         for letter in message:
             if letter in encryption.keys():
                 for key, value in encryption.items():
                     if letter == key:
-                        em.append(value)
-        encrypted_mess = "".join(em)
+                        encrypted_mess.append(value)
+            else:
+                encrypted_mess.append(random.choice(self.spaces))
+        encrypted_mess = "".join(encrypted_mess)
 
         Cipher.block_code(self, encrypted_mess)
 
@@ -29,13 +33,15 @@ class Atbash(Cipher):
         in the reversed alphabet.
         """
         encryption = {letter1:letter2 for letter1, letter2 in zip(self.alphabet[::-1], self.alphabet)}
-
-        em = []
+        encrypted_mess = []
         for letter in message:
             if letter in encryption.keys():
                 for key, value in encryption.items():
-                    if letter == key:
-                        em.append(value)
-        encrypted_mess = "".join(em)
-
-        Cipher.block_code(self, encrypted_mess)
+                    if key == letter:
+                        encrypted_mess.append(value)
+            elif letter in self.spaces:
+                encrypted_mess.append(" ")
+            else:
+                encrypted_mess.append("")
+        encrypted_mess = "".join(encrypted_mess)
+        print(encrypted_mess.upper())

@@ -39,7 +39,7 @@ def get_messages():
             print(user_prompt)
 
         message = input("What is your message?").lower()
-        message = message.replace(" ", "")
+        
 
         choice = input("Would you like to (e)ncrypt or (d)ecrypt the message?").lower()
         if choice == 'e':

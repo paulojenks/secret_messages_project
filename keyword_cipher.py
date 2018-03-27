@@ -1,3 +1,4 @@
+import random
 import re
 
 from cipher import Cipher
@@ -9,6 +10,7 @@ class KeywordCipher(Cipher):
         re.sub(r'[A-Za-z]+', '', self.codeword)
         diff = "".join([letter for letter in self.alphabet if letter not in self.codeword])
         self.values = self.codeword+diff
+        self.spaces =  ['!', '*', '^', '(']
 
     def encrypt(self, message):
         """Encryption for Keyword:
@@ -23,11 +25,13 @@ class KeywordCipher(Cipher):
                 for key, value in encryption.items():
                     if key == letter:
                         encrypted_mess.append(value)
+            else:
+                encrypted_mess.append(random.choice(self.spaces))
         encrypted_mess = "".join(encrypted_mess)
 
         Cipher.block_code(self, encrypted_mess)
 
-    def decrypt(self):
+    def decrypt(self, message):
         """Decryption for Keyword:
         Determines the letter matching of the keyword alphabet to the plain alphabet.
         """
@@ -39,6 +43,11 @@ class KeywordCipher(Cipher):
                 for key, value in encryption.items():
                     if key == letter:
                         encrypted_mess.append(value)
+            elif letter in self.spaces:
+                encrypted_mess.append(" ")
+            else:
+                encrypted_mess.append("")
+
         encrypted_mess = "".join(encrypted_mess)
 
-        Cipher.block_code(self, encrypted_mess)
+        print(encrypted_mess.upper())
